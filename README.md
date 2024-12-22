@@ -8,7 +8,7 @@ This tool automatically converts batch of images containing structured data (tab
 
 Before you start, you need to have:
 1. Python installed on your computer (version 3.7 or higher)
-2. An Anthropic API key (get it from [Anthropic's website](https://www.anthropic.com/))
+2. An Anthropic API key (get it from [Anthropic's console](https://console.anthropic.com/dashboard))
 
 ## Installation Steps
 
