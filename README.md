@@ -26,12 +26,13 @@ If you don't have Python installed:
 1. Open Terminal (Mac) or Command Prompt (Windows)
 2. Navigate to where you want to save the project:
 ```bash
-cd Documents/[repository-name]
+cd Documents
 ```
 3. Clone the repository:
 ```bash
-git clone [https://github.com/PetrAPConsulting/image2md]
+git clone https://github.com/PetrAPConsulting/image2md.git
 ```
+It creates folder image2md with cloned files
 
 #### Manual Download (Option 2):
 1. Click the green "Code" button on this page
