@@ -58,7 +58,7 @@ pip3 install anthropic
 self.client = anthropic.Anthropic(api_key="insert_api_key_here")
 ```
 3. Replace `"insert_api_key_here"` with your Anthropic API key
-4. Follow development of Anthropic models and make adjustments if new version is realised: 
+4. Follow development of Anthropic models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported. 
 ```python
 def __init__(self, model: str = "claude-3-5-sonnet-20241022")
 ```
