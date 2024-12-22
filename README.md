@@ -32,7 +32,7 @@ cd Documents
 ```bash
 git clone https://github.com/PetrAPConsulting/image2md.git
 ```
-It creates folder image2md with cloned files
+4. It creates folder image2md with cloned files
 
 #### Manual Download (Option 2):
 1. Click the green "Code" button on this page
