@@ -2,7 +2,7 @@
 
 ## Structured Image to Markdown Converter
 
-This tool automatically converts images containing structured data (tables, formulas, graphs) into markdown format. It uses Anthropic  API to analyze images and create detailed markdown descriptions based on included robust system prompt.
+This tool automatically converts images containing structured data (tables, formulas, graphs) into markdown format. It uses Anthropic's models via API to analyze images and create detailed markdown descriptions based on included robust system prompt.
 
 ## Prerequisites
 
