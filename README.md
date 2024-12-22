@@ -115,7 +115,8 @@ python images.py
    - Try using `python3` instead of `python`
 
 ### Still Having Problems?
-Create an issue in this repository with:
+First, try your good friend ChatGPT, Claude or Gemini. All three of them are able to help you if you give them occured errors.
+Or create an issue in this repository with:
 - The error message you're seeing
 - Your operating system
 - Steps you've tried
