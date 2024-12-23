@@ -1,6 +1,6 @@
 # image2md
 
-## Structured Image to Markdown Converter
+## Structured Images to Markdown Converter
 
 This tool automatically converts batch of images containing structured data (tables, formulas, graphs) into markdown format. It uses Anthropic's models via API to analyze images and create detailed markdown descriptions based on included robust system prompt.
 
@@ -97,6 +97,7 @@ python images.py
 - Converts mathematical formulas to LaTeX format
 - Provides detailed analysis of graphs
 - Generates log files for troubleshooting
+- IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic models are multilingual, language of sytem prompt determinates language of output except data it directly transfers from source, like content of tables.  
 
 ### Troubleshooting
 
