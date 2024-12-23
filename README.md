@@ -36,8 +36,9 @@ git clone https://github.com/PetrAPConsulting/image2md.git
 
 #### Manual Download (Option 2):
 1. Click the green "Code" button on this page
-2. Select "Download ZIP"
-3. Extract the ZIP file to your desired location
+2. Click on the sheet "Local"
+3. Select "Download ZIP"
+4. Extract the ZIP file to your desired location
 
 ### 3. Install Required Library
 Open Terminal (Mac) or Command Prompt (Windows) in the project folder and run:
