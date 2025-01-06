@@ -2,7 +2,7 @@
 
 ## Structured Images to Markdown Converter
 
-This tool automatically converts batch of images containing structured data (tables, formulas, graphs) into markdown format. It uses Anthropic's models via API to analyze images and create detailed markdown descriptions based on included robust system prompt.
+This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files suitable for RAG pipeline. It uses Anthropic's models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
 
 ## Prerequisites
 
