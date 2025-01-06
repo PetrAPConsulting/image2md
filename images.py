@@ -45,12 +45,12 @@ class ImageProcessor:
             
     def create_system_prompt(self) -> str:
         """
-        Create system prompt for structured data analysis.
+        Create system prompt for structured data analysis and conversion of images to markdown for RAG optimized pipeline.
         
         Returns:
             System prompt
         """
-        return """Analyze the image content and convert this image into a structured markdown representation that preserves its data and relationships. 
+        return """Analyze the image content and convert this image into a structured markdown representation with focus on preserving data relationships and machine readability. 
         Follow these conversion guidelines based on content type:
 
 1. Content Type:
