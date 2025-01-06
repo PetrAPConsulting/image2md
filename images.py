@@ -50,12 +50,12 @@ class ImageProcessor:
         Returns:
             System prompt
         """
-        return """Analyze the image content focusing on structured data. Follow these points:
+        return """Analyze the image content and convert this image into a structured markdown representation that preserves its data and relationships. 
+        Follow these conversion guidelines based on content type:
 
 1. Content Type:
-   - Identify whether it's a table, graph, formula, or combination
-   - Describe the format and data structure
-
+   - Identify whether it's a table, graph, chart, formula, flowchart, diagram, process flow, technical diagram or combination
+ 
 2. For Tables:
    - Create exact markdown representation of the table using markdown syntax (|column1|column2|)
    - Create a separator row (|---|---|) after the header
@@ -63,18 +63,42 @@ class ImageProcessor:
    - After the table, add a brief description of column headers and their meaning
    - Identify key trends or important values in the data
 
-3. For Graphs:
+3. For Graphs and Charts:
    - Identify the graph type (bar, line, pie, etc.)
    - Describe axes and their units
    - Analyze trends and significant points
    - Record maximums, minimums, and important values
+   - Describe the relationship pattern (linear, exponential, etc.) as a markdown header
 
 4. For Formulas:
    - Transcribe the formula into LaTeX format if possible
+   - Use LaTeX notation within markdown delimiters. For example: $$ y = mx + b $$
    - Identify variables and their meaning
    - Describe the mathematical context of the formula
+   
+5. For Flowcharts and Diagrams:
+   - Convert to mermaid markdown syntax when possible:
+	```mermaid
+	graph LR
+        A-->B
+        B-->C
+	```
+   
+6. For Process Flows:
+   - Create a numbered list with clear step progression and any branching conditions
 
-Format output in Markdown with appropriate headings and structure."""
+7. For Technical Diagrams:
+   - Create a hierarchical structure using markdown headers
+   - List components and their relationships
+   - Preserve any measurements or specifications in tables   
+
+Additional Guidelines:
+- Maintain numerical precision exactly as shown
+- Preserve all labels and annotations as markdown text
+- Include metadata as key-value pairs at the top
+- Use markdown quotes for any explanatory text
+- Structure the output to prioritize machine readability
+- Preserve relationships between data elements using markdown hierarchy"""
 
     def get_mime_type(self, file_path: str) -> str:
         """
