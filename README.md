@@ -93,10 +93,12 @@ python images.py
 - `.png`
 
 ### Features
-- Automatically detects tables, formulas, and graphs
+- Automatically detects tables, formulas, graphs, flowcharts, etc.
 - Creates markdown tables from image tables
 - Converts mathematical formulas to LaTeX format
 - Provides detailed analysis of graphs
+- Creates nice clear markdown mermaid from flowcharts and process diagrams
+- Keeps anotations and tables of technical charts
 - Generates log files for troubleshooting
 - IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic models are multilingual, language of sytem prompt determinates language of output except data it directly transfers from source, like content of tables.  
 
