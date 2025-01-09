@@ -74,7 +74,7 @@ def main():
 
 ### Usage
 
-1. Copy your images (.jpg, .jpeg, or .png) to the same folder as the script. Keep images around 1000px x 1000px for token consumption optimalization
+1. Copy your images (.jpg, .jpeg, or .png) to the same folder as the script. Keep images around 1000 x 1000px for token consumption optimalization. You can download simple batch image downscaler for downscaling jpeg, jpg, png, webp files.
 2. Open Terminal (Mac) or Command Prompt (Windows)
 3. Navigate to the script's folder:
 ```bash
