@@ -96,7 +96,7 @@ Additional Guidelines:
 - Maintain numerical precision exactly as shown
 - Preserve all labels and annotations as markdown text
 - Include metadata as key-value pairs at the top
-- Use markdown quotes for any explanatory text
+- Transcribe and preserve any explanatory text as markdown text
 - Structure the output to prioritize machine readability
 - Preserve relationships between data elements using markdown hierarchy"""
 
