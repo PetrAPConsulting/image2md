@@ -120,7 +120,7 @@ python img2md_m.py.py
 - Creates nice clear markdown mermaid from flowcharts and process diagrams
 - Preserves anotations and tables with measurements 
 - Generates log files for troubleshooting
-- IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic and Mistral models are multilingual, language of sytem prompt determinates language of output except data is directly extracted from source, like content of tables.  
+- IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic and Mistral models are multilingual, language of sytem prompt determinates language of output except, data is directly extracted from source, like content of tables.  
 
 ### Troubleshooting
 
