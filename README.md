@@ -2,13 +2,14 @@
 
 ## Structured Images to Markdown Converter
 
-This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files suitable for RAG pipeline. It uses Anthropic's models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
+This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files suitable for RAG pipeline. It uses either top tier Anthropic's models or free Mistral AI's vision Pixtral model via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
 
 ## Prerequisites
 
 Before you start, you need to have:
 1. Python installed on your computer (version 3.7 or higher)
 2. An Anthropic API key (get it from [Anthropic's console](https://console.anthropic.com/dashboard))
+3. An Mistral API key when using Pixtral model (get it from [Mistral's console](https://console.mistral.ai/api-keys/))
 
 ## Installation Steps
 
@@ -50,8 +51,9 @@ If that doesn't work, try:
 ```bash
 pip3 install anthropic
 ```
+You do not need to install anything for using Mistral AI models.
 
-### Configuration
+### Configuration Anthropic script
 
 1. Open the `images.py` file in a text editor
 2. Find this line:
@@ -71,6 +73,20 @@ def main():
         "claude-3-haiku-20240307"
     ]  
 ```
+### Configuration Mistral AI script
+
+1. Open the `img2md_m.py` file in a text editor
+2. Find this line:
+```python
+API_KEY = "API_key_here"
+```
+3. Replace `"API_key_here"` with your Mistral API key
+4. Follow development of Mistral AI models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported and only Pixtral is free. If you would like to use top tier Pixtral Large you need to charge your account with credit. 
+```python
+class MistralModel(str, Enum):
+    PIXTRAL = "pixtral-12b-2409"
+    PIXTRAL_LARGE = "pixtral-large-latest"
+```
 
 ### Usage
 
@@ -83,6 +99,10 @@ cd path/to/your/folder
 4. Run the script:
 ```bash
 python images.py
+```
+or
+```bash
+python img2md_m.py.py
 ```
 5. Select a model when prompted (1-3)
 6. The script will create markdown (.md) files for each image in the same folder
@@ -100,7 +120,7 @@ python images.py
 - Creates nice clear markdown mermaid from flowcharts and process diagrams
 - Preserves anotations and tables with measurements 
 - Generates log files for troubleshooting
-- IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic models are multilingual, language of sytem prompt determinates language of output except data it directly transfers from source, like content of tables.  
+- IMPORTANT: If you need output in different language than ENG you need to translate system prompt in python script. Even though Anthropic and Mistral models are multilingual, language of sytem prompt determinates language of output except data it directly transfers from source, like content of tables.  
 
 ### Troubleshooting
 
@@ -129,5 +149,5 @@ Or create an issue in this repository with:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-- Uses Anthropic's API for image analysis
+- Uses Anthropic's API or Mistral AI API for image analysis
 - Inspired by Petr's need for automated structured data extraction from images
