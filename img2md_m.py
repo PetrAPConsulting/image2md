@@ -107,7 +107,7 @@ Additional Guidelines:
             },
             {
                 "role": "user",
-                "content": "Analyze this product image and create a detailed markdown description."
+                "content": """Analyze the image content and convert this image into a structured markdown representation with focus on preserving data relationships and machine readability."""
             }
         ]
 
@@ -131,7 +131,7 @@ Additional Guidelines:
             messages[1]["content"] = [
                 {
                     "type": "text",
-                    "text": "Analyze this product image and create a detailed markdown description."
+                    "text": """Analyze the image content and convert this image into a structured markdown representation with focus on preserving data relationships and machine readability."""
                 },
                 {
                     "type": "image_url",
