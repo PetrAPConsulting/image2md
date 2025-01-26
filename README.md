@@ -102,7 +102,7 @@ python images.py
 ```
 or
 ```bash
-python img2md_m.py.py
+python img2md_m.py
 ```
 5. Select a model when prompted (1-3)
 6. The script will create markdown (.md) files for each image in the same folder
