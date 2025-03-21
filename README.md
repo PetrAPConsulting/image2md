@@ -2,7 +2,7 @@
 
 ## Structured Images to Markdown Converter
 
-This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or free Mistral AI's vision Pixtral model via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
+This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or free Mistral AI's vision Pixtral or Mistral Small models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
 
 ## Prerequisites
 
@@ -81,7 +81,7 @@ def main():
 API_KEY = "API_key_here"
 ```
 3. Replace `"API_key_here"` with your Mistral API key
-4. Follow development of Mistral AI models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported and only Pixtral is free. If you would like to use top tier Pixtral Large you need to charge your account with credit. 
+4. Follow development of Mistral AI models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported and Pixtral and Mistral Small are free. If you would like to use top tier Pixtral Large you need to charge your account with credit. 
 ```python
 class MistralModel(str, Enum):
     PIXTRAL = "pixtral-12b-2409"
