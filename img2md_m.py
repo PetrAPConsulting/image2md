@@ -11,6 +11,7 @@ import os
 class MistralModel(str, Enum):
     PIXTRAL = "pixtral-12b-2409"
     PIXTRAL_LARGE = "pixtral-large-latest"
+    MISTRAL_SMALL = "mistral-small-latest"	
 
 @dataclass
 class MistralConfig:
@@ -199,12 +200,12 @@ def main():
     
     while True:
         try:
-            model_choice = int(input("\nSelect model number (1-2): ")) - 1
+            model_choice = int(input("\nSelect model number (1-3): ")) - 1
             if 0 <= model_choice < len(MistralModel):
                 break
-            print("Invalid choice, enter 1-2")
+            print("Invalid choice, enter 1-3")
         except ValueError:
-            print("Invalid input, enter 1-2")
+            print("Invalid input, enter 1-3")
     
     config = MistralConfig.create(list(MistralModel)[model_choice])
     processor = ImageProcessor(config)
