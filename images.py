@@ -7,12 +7,12 @@ from datetime import datetime
 import os
 
 class ImageProcessor:
-    def __init__(self, model: str = "claude-3-5-sonnet-20241022"):
+    def __init__(self, model: str = "claude-3-7-sonnet-20250219"):
         """
         Initialize the image processor.
         
         Args:
-            model: Model to be used for analysis (default is claude-3-5-sonnet-20241022)
+            model: Model to be used for analysis (default is claude-3-7-sonnet-20250219)
         """
         self.client = anthropic.Anthropic(api_key="insert_api_key_here")  # Insert your API key here
         self.model = model
@@ -199,9 +199,9 @@ Additional Guidelines:
 def main():
     # Available models
     available_models = [
-        "claude-3-5-sonnet-20241022",
+        "claude-3-7-sonnet-20250219",
         "claude-3-opus-20240229",
-        "claude-3-haiku-20240307"
+        "claude-3-5-haiku-latest"
     ]
     
     print("Available models:")
