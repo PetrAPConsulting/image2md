@@ -86,6 +86,7 @@ API_KEY = "API_key_here"
 class MistralModel(str, Enum):
     PIXTRAL = "pixtral-12b-2409"
     PIXTRAL_LARGE = "pixtral-large-latest"
+    MISTRAL_SMALL = "mistral-small-latest"
 ```
 
 ### Usage
