@@ -2,14 +2,14 @@
 
 ## Structured Images to Markdown Converter
 
-This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or free Mistral AI's vision Pixtral or Mistral Small models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
+This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or very cheap Mistral AI's vision Pixtral or Mistral Small models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
 
 ## Prerequisites
 
 Before you start, you need to have:
 1. Python installed on your computer (version 3.7 or higher)
 2. An Anthropic API key (get it from [Anthropic's console](https://console.anthropic.com/dashboard))
-3. An Mistral API key when using Pixtral model (get it from [Mistral's console](https://console.mistral.ai/api-keys/))
+3. An Mistral API key (get it from [Mistral's console](https://console.mistral.ai/api-keys/))
 
 ## Installation Steps
 
@@ -63,14 +63,14 @@ self.client = anthropic.Anthropic(api_key="insert_api_key_here")
 3. Replace `"insert_api_key_here"` with your Anthropic API key
 4. Follow development of Anthropic models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported. 
 ```python
-def __init__(self, model: str = "claude-3-5-sonnet-20241022")
+def __init__(self, model: str = "claude-3-7-sonnet-20250219")
 ```
 ```python
 def main():
     available_models = [
-        "claude-3-5-sonnet-20241022",
+        "claude-3-7-sonnet-20250219",
         "claude-3-opus-20240229",
-        "claude-3-haiku-20240307"
+        "claude-3-5-haiku-latest"
     ]  
 ```
 ### Script configuration for Mistral AI
@@ -81,7 +81,7 @@ def main():
 API_KEY = "API_key_here"
 ```
 3. Replace `"API_key_here"` with your Mistral API key
-4. Follow development of Mistral AI models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported and Pixtral and Mistral Small are free. If you would like to use top tier Pixtral Large you need to charge your account with credit. 
+4. Follow development of Mistral AI models and make adjustments in the script when new version is realised. Only models with vision capabilities are supported and Pixtral and Mistral Small are much cheaper than Pixtral Large. 
 ```python
 class MistralModel(str, Enum):
     PIXTRAL = "pixtral-12b-2409"
