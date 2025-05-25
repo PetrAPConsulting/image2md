@@ -7,14 +7,14 @@ from datetime import datetime
 import os
 
 class ImageProcessor:
-    def __init__(self, model: str = "claude-3-7-sonnet-20250219"):
+    def __init__(self, model: str = "claude-sonnet-4-20250514"):
         """
         Initialize the image processor.
         
         Args:
-            model: Model to be used for analysis (default is claude-3-7-sonnet-20250219)
+            model: Model to be used for analysis (default is claude-sonnet-4-20250514)
         """
-        self.client = anthropic.Anthropic(api_key="insert_api_key_here")  # Insert your API key here
+        self.client = anthropic.Anthropic(api_key="Insert_API_Key_Here")  
         self.model = model
         self.setup_logging()
         
@@ -50,55 +50,120 @@ class ImageProcessor:
         Returns:
             System prompt
         """
-        return """Analyze the image content and convert this image into a structured markdown representation with focus on preserving data relationships and machine readability. 
-        Follow these conversion guidelines based on content type:
+        return """Analyze the image content and convert it into a structured markdown representation optimized for RAG (Retrieval-Augmented Generation). Focus on preserving data relationships, spatial context, and machine readability.
 
-1. Content Type:
-   - Identify whether it's a table, graph, chart, formula, flowchart, diagram, process flow, technical diagram or combination
- 
-2. For Tables:
-   - Create exact markdown representation of the table using markdown syntax (|column1|column2|)
-   - Create a separator row (|---|---|) after the header
-   - Transcribe all values exactly as they appear in the table
-   - After the table, add a brief description of column headers and their meaning
-   - Identify key trends or important values in the data
+## Content Analysis and Conversion Guidelines:
 
-3. For Graphs and Charts:
-   - Identify the graph type (bar, line, pie, etc.)
-   - Describe axes and their units
-   - Analyze trends and significant points
-   - Record maximums, minimums, and important values
-   - Describe the relationship pattern (linear, exponential, etc.) as a markdown header
+### 1. Content Type Identification:
+   - Identify primary content: table, graph, chart, formula, flowchart, diagram, process flow, technical schematic, or combination
+   - For mixed content, process each section separately with clear headers
+   - Note the overall context and purpose of the image
 
-4. For Formulas:
-   - Transcribe the formula into LaTeX format if possible
-   - Use LaTeX notation within markdown delimiters. For example: $$ y = mx + b $$
-   - Identify variables and their meaning
-   - Describe the mathematical context of the formula
+### 2. For Tables:
+   - Create exact markdown table using proper syntax:
+     ```
+     | Column 1 | Column 2 | Column 3 |
+     |----------|----------|----------|
+     | Value 1  | Value 2  | Value 3  |
+     ```
+   - Preserve all values exactly as shown (including units, decimals, formatting)
+   - For complex tables with merged cells, use descriptive text to indicate structure
+   - Handle multi-level headers by creating separate description sections
+   - After the table, include:
+     - Brief description of each column's meaning
+     - Key insights, trends, or notable values
+     - Any totals, calculations, or summary rows
+
+### 3. For Graphs and Charts:
+   - Start with chart type identification (bar, line, pie, scatter, histogram, etc.)
+   - Document axes information:
+     - X-axis: label, units, range, scale type (linear/log)
+     - Y-axis: label, units, range, scale type
+   - Extract data points systematically (especially key values)
+   - Identify and describe:
+     - Trends (increasing, decreasing, cyclical, etc.)
+     - Outliers and significant points
+     - Relationships between variables
+     - Any annotations or callouts on the chart
+
+### 4. For Mathematical Formulas:
+   - Convert to LaTeX format within markdown delimiters:
+     - Inline: `$formula$`
+     - Block: `$$formula$$`
+   - Example: `$$E = mc^2$$`
+   - Include variable definitions and units
+   - Provide context about the formula's application
+   - Note any conditions or constraints mentioned
+
+### 5. For Flowcharts and Diagrams:
+   - Convert to Mermaid syntax:
+   ```mermaid
+   flowchart TD
+       A[Start] --> B{Decision}
+       B -->|Yes| C[Process]
+       B -->|No| D[End]
+       C --> D
+   ```
    
-5. For Flowcharts and Diagrams:
-   - Convert to mermaid markdown syntax when possible:
-	```mermaid
-	graph LR
-        A-->B
-        B-->C
-	```
+   **Essential syntax rules:**
+   - Use `flowchart TD` (Top Down) or `flowchart LR` (Left Right) - NOT `graph`
+   - Node shapes: `A[Rectangle]`, `B{Diamond}`, `C((Circle))`, `D[/Parallelogram/]`
+   - Connections: `A --> B` (arrow), `A -->|Label| B` (labeled arrow)
+   - Quote labels with spaces: `A["Multi word label"]`
+   - Keep node IDs simple (A, B, C or descriptive single words)
    
-6. For Process Flows:
-   - Create a numbered list with clear step progression and any branching conditions
+   **For new Mermaid versions:**
+   - Always use `flowchart` instead of deprecated `graph`
+   - Quote labels containing spaces, parentheses, or special characters
+   - Escape special characters when needed
 
-7. For Technical Diagrams:
-   - Create a hierarchical structure using markdown headers
-   - List components and their relationships
-   - Preserve any measurements or specifications in tables   
+### 6. For Process Flows and Procedures:
+   - Create numbered sequential steps
+   - Include decision points and branching logic
+   - Note any parallel processes or dependencies
+   - Preserve timing information if present
 
-Additional Guidelines:
-- Maintain numerical precision exactly as shown
-- Preserve all labels and annotations as markdown text
-- Include metadata as key-value pairs at the top
-- Transcribe and preserve any explanatory text as markdown text
-- Structure the output to prioritize machine readability
-- Preserve relationships between data elements using markdown hierarchy"""
+### 7. For Technical Diagrams and Schematics:
+   - Use hierarchical markdown headers (##, ###, ####)
+   - List components with their specifications
+   - Document connections and relationships
+   - Preserve measurements, tolerances, and technical specifications
+   - Create tables for component lists or specifications
+
+## Output Structure Requirements:
+
+### Metadata Header:
+```markdown
+---
+content_type: [primary content type]
+complexity: [simple/moderate/complex]
+source_quality: [clear/moderate/poor]
+extraction_confidence: [high/medium/low]
+---
+```
+
+### Content Organization:
+1. **Title/Description**: Brief overview of the content
+2. **Main Content**: Structured representation using appropriate format
+3. **Key Insights**: Summary of important findings or relationships
+4. **Additional Notes**: Any unclear elements or assumptions made
+
+## Critical Guidelines for RAG Optimization:
+
+- **Preserve exact numerical values**: Maintain precision as shown
+- **Include contextual keywords**: Add relevant technical terms for searchability
+- **Structure for querying**: Use consistent headers and formatting
+- **Handle uncertainty**: Clearly mark unclear or partially visible content with `[unclear]` or `[partially visible]`
+- **Maintain relationships**: Preserve spatial and logical connections between elements
+- **Include units and scales**: Always specify measurements and units
+- **Cross-reference elements**: Link related sections when applicable
+
+## Quality Assurance:
+- Double-check numerical accuracy
+- Verify all text transcription
+- Ensure markdown syntax is correct
+- Test that Mermaid diagrams would render properly
+- Confirm LaTeX formulas are properly formatted"""
 
     def get_mime_type(self, file_path: str) -> str:
         """
@@ -199,8 +264,8 @@ Additional Guidelines:
 def main():
     # Available models
     available_models = [
-        "claude-3-7-sonnet-20250219",
-        "claude-3-opus-20240229",
+        "claude-sonnet-4-20250514",
+        "claude-opus-4-20250514",
         "claude-3-5-haiku-latest"
     ]
     
