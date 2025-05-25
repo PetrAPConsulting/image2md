@@ -136,6 +136,42 @@ class ImageProcessor:
    - Preserve measurements, tolerances, and technical specifications
    - Create tables for component lists or specifications
 
+### 8. For Text-Heavy Content and Long Text Fields:
+   - **Identify text regions**: Distinguish between structured data and pure text content
+   - **Preserve exact transcription**: Maintain original wording, punctuation, and spacing
+   - **Handle different text types**:
+     - **Paragraphs**: Transcribe as markdown paragraphs with proper line breaks
+     - **Lists**: Convert to markdown lists (- or 1.) while preserving hierarchy
+     - **Headers/Titles**: Use appropriate markdown headers (##, ###, ####)
+     - **Quotes/Citations**: Use blockquote format (>) for quoted material
+     - **Code/Technical text**: Use code blocks (```) for technical content
+   
+   - **Formatting preservation**:
+     - Maintain paragraph breaks and logical text flow
+     - Preserve emphasis (bold/italic) using **bold** and *italic* markdown
+     - Keep original capitalization and punctuation exactly
+     - Note any unclear or partially visible text with [unclear] markers
+   
+   - **Structure long text**:
+     ```markdown
+     ## [Document Title/Section Name]
+     
+     [First paragraph of text exactly as shown...]
+     
+     [Second paragraph...]
+     
+     ### [Subsection if applicable]
+     
+     [Continued text...]
+     ```
+   
+   - **Special considerations**:
+     - For multi-column text, clearly indicate column breaks
+     - Preserve any numbering or bullet point systems
+     - Maintain original language (don't translate)
+     - Keep any technical terminology or jargon exactly as written
+     - For handwritten text, transcribe as accurately as possible and note uncertainty
+
 ## Output Structure Requirements:
 
 ### Metadata Header:
