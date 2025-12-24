@@ -2,7 +2,7 @@
 
 ## Structured Images to Markdown Converter
 
-This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or very cheap Mistral AI's vision Pixtral or Mistral Small models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. 
+This tool automatically converts batch of images containing structured data (tables, formulas, graphs, diagrams, flowcharts, etc.) into markdown format. Markdown files are suitable for RAG pipeline. Tool uses either top tier Anthropic's models or very cheap Mistral AI's vision Pixtral or Mistral Small models via API to analyze images and create detailed markdown descriptions based on included robust system prompt. Finaly I added script using Google Gemini models that are now superior.
 
 ## Prerequisites
 
@@ -10,6 +10,7 @@ Before you start, you need to have:
 1. Python installed on your computer (version 3.7 or higher)
 2. An Anthropic API key (get it from [Anthropic's console](https://console.anthropic.com/dashboard))
 3. An Mistral API key (get it from [Mistral's console](https://console.mistral.ai/api-keys/))
+4. An Google API Key (get it from [Google AI Studio](https://aistudio.google.com/app/))
 
 ## Installation Steps
 
@@ -88,7 +89,24 @@ class MistralModel(str, Enum):
     PIXTRAL_LARGE = "pixtral-large-latest"
     MISTRAL_SMALL = "mistral-small-latest"
 ```
+### Google Gemini - Install required dependencies
 
+It's quite easy for Google API, because the most of the dependencies are included in Python installation. Install only
+```bash
+pip3 install google-generativeai
+```
+Input in script your Google API Key 
+```python
+API_KEY = "YOUR_API_KEY_HERE"
+```
+and you can use script with choices of 3 current Gemini models. If endpoints change, change them in the script.
+```python
+MODEL_OPTIONS: Dict[int, tuple] = {
+    1: ("flash", "gemini-2.5-flash-preview-09-2025", "Gemini 2.5 Flash"),
+    2: ("pro", "gemini-3-pro-preview", "Gemini 3 Pro"),
+    3: ("flash3", "gemini-3-flash-preview", "Gemini 3 Flash (Recommended)")
+}
+```
 ### Usage
 
 1. Copy your images (.jpg, .jpeg, or .png) to the same folder as the script. Keep images around 1000 x 1000px for token consumption optimalization. You can download simple batch image downscaler for downscaling jpeg, jpg, png, webp files.
@@ -112,6 +130,8 @@ python img2md_m.py
 - `.jpg`
 - `.jpeg`
 - `.png`
+- `.gif`
+- `.webp`
 
 ### Features
 - Automatically detects tables, formulas, graphs, flowcharts, etc.
@@ -150,5 +170,5 @@ Or create an issue in this repository with:
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
-- Uses Anthropic's API or Mistral AI API for image analysis
-- Inspired by Petr's need for automated structured data extraction from images
+- Uses Anthropic's API or Mistral AI API or Google API for image analysis
+
