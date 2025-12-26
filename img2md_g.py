@@ -1,11 +1,13 @@
 import os
 import glob
-import google.generativeai as genai
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 import sys
 from typing import Dict, Optional
+
+from google import genai
+from google.genai import types
 
 # --- START: API KEY INSERTION ---
 API_KEY = "YOUR_API_KEY_HERE"  # <--- INSERT YOUR API KEY HERE
@@ -16,10 +18,14 @@ SUPPORTED_FORMATS = ('.jpg', '.jpeg', '.png', '.gif', '.webp')
 
 # Gemini Model Options
 MODEL_OPTIONS: Dict[int, tuple] = {
-    1: ("flash", "gemini-2.5-flash-preview-09-2025", "Gemini 2.5 Flash"),
+    1: ("flash", "gemini-3-flash-preview", "Gemini 3 Flash (Recommended)"),
     2: ("pro", "gemini-3-pro-preview", "Gemini 3 Pro"),
-    3: ("flash3", "gemini-3-flash-preview", "Gemini 3 Flash (Recommended)")
 }
+
+# Generation Settings
+TEMPERATURE = 1.0  # 1.0 is default and recommended for Gemini 3 models
+THINKING_LEVEL = "HIGH"  # Options (FLASH): "MINIMAL", "LOW", "MEDIUM", "HIGH" Options (PRO): "LOW", "HIGH"
+
 
 def display_models() -> None:
     """Display available models with their descriptions."""
@@ -29,35 +35,51 @@ def display_models() -> None:
         print(f"{num}. {name:<10} - {description}")
     print("-" * 50)
 
+
 def get_model_choice() -> Optional[str]:
     """Get and validate user's model choice."""
     while True:
         display_models()
         try:
-            choice = int(input("\nVyberte číslo modelu (1-3): "))
+            choice = int(input(f"\nVyberte číslo modelu (1-{len(MODEL_OPTIONS)}): "))
             if choice in MODEL_OPTIONS:
                 return MODEL_OPTIONS[choice][1]
-            print("Neplatná volba. Prosím vyberte číslo mezi 1 a 3.")
+            print(f"Neplatná volba. Prosím vyberte číslo mezi 1 a {len(MODEL_OPTIONS)}.")
         except ValueError:
             print("Prosím zadejte platné číslo.")
         except KeyboardInterrupt:
             print("\nOperace zrušena uživatelem.")
             return None
 
+
 def image_to_markdown(image_path: str, model_name: str) -> Optional[str]:
     """Convert image to markdown description using Gemini API."""
     try:
         print(f"Zpracování: {image_path}")
         print(f"Používám model: {model_name}")
-        
-        genai.configure(api_key=API_KEY)
-        model = genai.GenerativeModel(model_name)
+        print(f"Temperature: {TEMPERATURE}, Thinking: {THINKING_LEVEL}")
 
+        # Create client
+        client = genai.Client(api_key=API_KEY)
+
+        # Read image file
         with open(image_path, "rb") as image_file:
             image_content = image_file.read()
 
+        # Detect mime type based on extension
+        ext = Path(image_path).suffix.lower()
+        mime_types = {
+            '.jpg': 'image/jpeg',
+            '.jpeg': 'image/jpeg',
+            '.png': 'image/png',
+            '.gif': 'image/gif',
+            '.webp': 'image/webp'
+        }
+        mime_type = mime_types.get(ext, 'image/jpeg')
+
+        # --- START: SYSTEM PROMPT ---
         prompt = """
-        Analyze the image content and convert it into a structured markdown representation optimized for RAG (Retrieval-Augmented Generation). Focus on preserving data relationships, spatial context, and machine readability.
+    Analyze the image content and convert it into a structured markdown representation optimized for RAG (Retrieval-Augmented Generation). Focus on preserving data relationships, spatial context, and machine readability.
 
     Content Analysis and Conversion Guidelines:
 
@@ -207,12 +229,34 @@ extraction_confidence: [high/medium/low]
 - Ensure markdown syntax is correct
 - Test that Mermaid diagrams would render properly
 - Confirm LaTeX formulas are properly formatted
-"""        
+        """
+        # --- END: SYSTEM PROMPT ---
 
-        response = model.generate_content([
-            prompt,
-            {"mime_type": "image/jpeg", "data": image_content},
-        ])
+        # Create content structure
+        contents = [
+            types.Content(
+                role="user",
+                parts=[
+                    types.Part.from_text(text=prompt),
+                    types.Part.from_bytes(data=image_content, mime_type=mime_type),
+                ],
+            ),
+        ]
+
+        # Generation config with temperature and thinking level
+        generate_content_config = types.GenerateContentConfig(
+            temperature=TEMPERATURE,
+            thinking_config=types.ThinkingConfig(
+                thinking_level=THINKING_LEVEL,
+            ),
+        )
+
+        # Generate content
+        response = client.models.generate_content(
+            model=model_name,
+            contents=contents,
+            config=generate_content_config,
+        )
 
         markdown_content = response.text
 
@@ -226,6 +270,7 @@ extraction_confidence: [high/medium/low]
         print(f"Chyba při zpracování {image_path}: {str(e)}")
         return None
 
+
 def save_markdown(markdown_content: str, output_path: str) -> bool:
     """Save Markdown content to file."""
     try:
@@ -236,6 +281,7 @@ def save_markdown(markdown_content: str, output_path: str) -> bool:
     except Exception as e:
         print(f"✗ Chyba při ukládání {output_path}: {str(e)}")
         return False
+
 
 def process_image(image_path: str, model_name: str, output_dir: str) -> bool:
     """Process a single image file."""
@@ -250,9 +296,10 @@ def process_image(image_path: str, model_name: str, output_dir: str) -> bool:
         print(f"Chyba při zpracování {image_path}: {str(e)}")
         return False
 
+
 def main() -> None:
     """Main function to run the Image to Markdown converter."""
-    print(f"Převodník obrázků na popis v Markdownu")
+    print("Převodník obrázků na popis v Markdownu")
     print(f"Python: {sys.executable}")
     print("-" * 50)
 
@@ -276,24 +323,24 @@ def main() -> None:
     image_files = []
     for ext in SUPPORTED_FORMATS:
         image_files.extend(glob.glob(os.path.join(input_dir, f"*{ext}")))
-    
+
     if not image_files:
         print("Nebyly nalezeny žádné podporované obrázky v aktuálním adresáři.")
         print(f"Podporované formáty: {', '.join(SUPPORTED_FORMATS)}")
         return
 
     print(f"\nNalezeno {len(image_files)} obrázků.")
-    
+
     # Process files
     start_time = time.time()
     successful_conversions = 0
-    
+
     with ThreadPoolExecutor(max_workers=4) as executor:
         futures = [
             executor.submit(process_image, image_path, model_name, output_dir)
             for image_path in image_files
         ]
-        
+
         for future in as_completed(futures):
             if future.result():
                 successful_conversions += 1
@@ -310,6 +357,7 @@ def main() -> None:
     print(f"Celkový čas: {duration:.2f} sekund")
     print(f"Průměrný čas na soubor: {duration/len(image_files):.2f} sekund")
     print(f"\nVýstupní adresář: {output_dir}")
+
 
 if __name__ == "__main__":
     try:
