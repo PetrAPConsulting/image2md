@@ -93,7 +93,7 @@ class MistralModel(str, Enum):
 
 It's quite easy for Google API, because the most of the dependencies are included in Python installation. Install only
 ```bash
-pip3 install google-generativeai
+pip3 install google-genai
 ```
 Input in script your Google API Key 
 ```python
@@ -101,10 +101,10 @@ API_KEY = "YOUR_API_KEY_HERE"
 ```
 and you can use script with choices of 3 current Gemini models. If endpoints change, change them in the script.
 ```python
+# Gemini Model Options
 MODEL_OPTIONS: Dict[int, tuple] = {
-    1: ("flash", "gemini-2.5-flash-preview-09-2025", "Gemini 2.5 Flash"),
+    1: ("flash", "gemini-3-flash-preview", "Gemini 3 Flash (Recommended)"),
     2: ("pro", "gemini-3-pro-preview", "Gemini 3 Pro"),
-    3: ("flash3", "gemini-3-flash-preview", "Gemini 3 Flash (Recommended)")
 }
 ```
 ### Usage
